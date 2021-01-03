@@ -10,33 +10,39 @@
 <body>
     <div>
         <label>Search bar</label>
-        <input type="search" name="search_text" placeholder="searchbar" id="search_text">
+        <input type="search" name="search" placeholder="searchbar" id="search">
     </div>
-
+    <div>
+        <h1 id="result"></h1>
+    </div>
 <script>
 
-        $(document).ready(function(){
-            $('#search_text').keyup(function(){
-                var txt=$(this).val();
-                if(txt !='')
-                {
-                    $.ajax({
-                        url:'fetch.php',
-                        type:'POST',
-                        data:{search:text},
-                        datatype:"text",
-                        success: function(data){
-                            $('#result').html(' ');
-                        }
-                    
-                    
-                    })
-                }
-            })
-        })
-
-
-    </script>
-
+       $(document).ready(function(){
+ load_data();
+ function load_data(query)
+ {
+  $.ajax({
+   url:"fetch.php",
+   method:"POST",
+   data:{query:query},
+   success:function(data)
+   {
+    $('#result').html(data);
+   }
+  });
+ }
+ $('#search').keyup(function(){
+  var search = $(this).val();
+  if(search != '')
+  {
+   load_data(search);
+  }
+  else
+  {
+   load_data();
+  }
+ });
+});
+</script>
 </body>
 </html>
